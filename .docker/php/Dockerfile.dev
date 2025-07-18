@@ -1,0 +1,44 @@
+ARG PHP_VERSION=8.4
+ARG FRANKENPHP_VERSION=1.9
+FROM dunglas/frankenphp:${FRANKENPHP_VERSION}-php${PHP_VERSION}
+ENV MAKEFLAGS='-j$(nproc)'
+ENV COMPOSE_BAKE=true
+ENV TZ=Europe/Prague
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install system dependencies and czech locale
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    git \
+    unzip \
+    locales \
+    libzip-dev \
+    zip \
+    libjpeg-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN echo "cs_CZ.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen; \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone; \
+    iconvconfig;
+
+RUN install-php-extensions \
+    gd \
+    pcntl \
+    opcache \
+    pdo \
+    pdo_mysql \
+    redis \
+    sockets \
+    mbstring \
+    intl \
+    exif \
+    iconv \
+    zip
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /app
+
+# Install PHP extensions
+RUN pecl install xdebug
+

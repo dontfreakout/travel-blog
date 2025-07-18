@@ -1,0 +1,91 @@
+services:
+    app:
+        build:
+            context: ./
+            dockerfile: .docker/php/Dockerfile.dev
+        volumes:
+            - ./.dsdev:/.dsdev:ro,z
+            - .:/app:z
+            - ./.docker/php/zzzz_custom.ini:/usr/local/etc/php/conf.d/zzzz_custom.ini:z
+            - caddy_data:/data
+            - caddy_config:/config
+        ports:
+            - "2019:2019"
+        networks:
+            default:
+            proxy:
+                aliases:
+                    - travel-blog.localhost
+        environment:
+            - VIRTUAL_HOST=travel-blog.localhost
+            - VIRTUAL_PROTO=http
+            - VIRTUAL_PORT=80
+            - HOSTNAME=travel-blog-app
+            - SERVER_NAME=:80
+
+    node:
+        image: node:24
+        working_dir: /srv/app
+        entrypoint: ['/bin/sh']
+        volumes:
+            - ./.dsdev:/.dsdev:ro,z
+            - .:/srv/app:z
+        tty: true
+        ports:
+            - "3000:3000"
+            - "3001:3001"
+        environment:
+            - VIRTUAL_HOST=npm.travel-blog.localhost
+            - VIRTUAL_PROTO=http
+            - VIRTUAL_PORT=3000
+        networks:
+            default:
+            proxy:
+                aliases:
+                    - npm.travel-blog.localhost
+
+    key_db:
+        image: eqalpha/keydb:x86_64_v6.3.4
+        entrypoint: keydb-server /etc/keydb/keydb.conf --server-threads 1 --appendonly yes
+        ports:
+            - "56378:6379"
+        volumes:
+            -   keydb_data:/data
+
+    db:
+        image: mariadb:11.7.2
+        ports:
+            - "53307:3306"
+        volumes:
+            - db_data:/var/lib/mysql
+        environment:
+            - MYSQL_DATABASE=db
+            - MYSQL_ROOT_PASSWORD=HAL9000
+
+    mailpit:
+        image: axllent/mailpit:latest
+        volumes:
+            - mailpit_data:/data
+        environment:
+            - MP_MAX_MESSAGES=5000
+            - MP_DATABASE=/data/mailpit.db
+            - MP_SMTP_AUTH_ACCEPT_ANY=1
+            - MP_SMTP_AUTH_ALLOW_INSECURE=1
+            - VIRTUAL_HOST=mailpit.travel-blog.localhost
+            - VIRTUAL_PROTO=http
+            - VIRTUAL_PORT=8025
+        networks:
+            default:
+            proxy:
+
+volumes:
+    caddy_data:
+    caddy_config:
+    db_data:
+    mailpit_data:
+    keydb_data:
+
+networks:
+    proxy:
+        external: true
+        name: proxy_network
