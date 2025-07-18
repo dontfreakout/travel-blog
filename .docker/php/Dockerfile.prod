@@ -1,6 +1,6 @@
 ARG PHP_VERSION=8.4
 ARG FRANKENPHP_VERSION=1.9
-FROM dunglas/frankenphp:${FRANKENPHP_VERSION}-builder-php${PHP_VERSION} as builder
+FROM dunglas/frankenphp:${FRANKENPHP_VERSION}-builder-php${PHP_VERSION} AS builder
 ENV MAKEFLAGS='-j$(nproc)'
 ENV COMPOSE_BAKE=true
 ENV TZ=Europe/Prague
@@ -39,7 +39,17 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /app
 
 # Copy the application code into the container
-COPY app/ bootstrap/ config/ /content lang/ public/ resources/ routes/ storage/ users/ composer.json composer.lock artisan package.json package-lock.json please tailwind.config.js vite.config.js ./
+COPY app app/
+COPY bootstrap bootstrap/
+COPY config config/
+COPY content content/
+COPY lang lang/
+COPY public public/
+COPY resources resources/
+COPY routes routes/
+COPY storage storage/
+COPY users users/
+COPY composer.json composer.lock artisan package.json package-lock.json please tailwind.config.js vite.config.js ./
 
 # Install PHP dependencies
 RUN composer install --no-dev --no-interaction --no-plugins --no-scripts --prefer-dist --optimize-autoloader
@@ -47,7 +57,7 @@ RUN rm -rf /app/storage/logs/*
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
-FROM node:24 as node
+FROM node:24 AS node
 WORKDIR /app
 COPY --from=builder /app /app
 
