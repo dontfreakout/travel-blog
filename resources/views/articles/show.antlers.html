@@ -4,7 +4,7 @@
         <h1>{{ title }}</h1>
         <div class="bg-gray-800 inline-block text-sm mb-16 pr-4 pl-16 -ml-16 uppercase tracking-widest text-white py-1 rounded-r-full">
             {{ if topics }}
-                in {{ topics }}<a href="{{ url }}" class="text-teal-light no-underline hover:text-white">{{ title }}</a>{{ unless last }}, {{ /unless }}{{ /topics }}
+                {{ topics }}<a href="{{ url }}" class="text-teal-light no-underline hover:text-white">{{ title }}</a>{{ unless last }}, {{ /unless }}{{ /topics }}
             {{ /if }}
             {{ date format_translated="F j, Y" }}
         </div>

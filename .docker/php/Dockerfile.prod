@@ -46,7 +46,7 @@ COPY resources resources/
 COPY routes routes/
 COPY storage storage/
 COPY users users/
-COPY composer.json composer.lock artisan package.json package-lock.json please tailwind.config.js vite.config.js ./
+COPY composer.json composer.lock artisan please ./
 
 # Install PHP dependencies
 RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
