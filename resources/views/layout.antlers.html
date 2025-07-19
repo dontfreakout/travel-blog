@@ -12,13 +12,15 @@
     <body class="bg-white font-sans leading-normal text-grey-800 px-4 sm:px-10" x-data="{ showMobileNav: false }">
         <!-- fullscreen responsive background image -->
         <div
-            class="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat
+            style="height: 100lvh;"
+            class="fixed z-0 bg-cover bg-center bg-no-repeat
+            left-0 right-0 top-0
            bg-[url('https://ivetamabatoh.cz/assets/site/background-desktop.jpg')]
            portrait:bg-[url('https://ivetamabatoh.cz/assets/site/background-mobile2x.jpg')]">
             <div class="absolute inset-0 bg-white opacity-80"></div>
         </div>
 
-        <div class="absolute inset-0 px-2 md:px-4">
+        <div class="absolute px-2 md:px-4">
             {{ partial:nav }}
             {{ template_content }}
             {{ partial:footer }}
