@@ -13,10 +13,13 @@
         {{ /if }}
 
         {{ articles }}
-        <div class="mb-2">
+        <div class="mb-4">
             <a href="{{ url }}" class="text-lg hover:text-teal tracking-tight leading-tight font-bold">
                 {{ title | widont }}
             </a>
+            <i class="text-gray-600 text-xs inline-block ml-4 uppercase tracking-widest font-medium">
+                {{ date format_translated="j. F, Y" }}
+            </i>
         </div>
         {{ /articles }}
 
@@ -24,10 +27,10 @@
         {{ if prev_page || next_page }}
         <div class="flex justify-between text-xl -mx-16 pt-16 font-bold">
             <a href="{{ prev_page }}" class="{{ ! prev_page ?= 'opacity-25' }}">
-                &larr; Back to the future
+                &larr; Zpět do budoucnosti
             </a>
             <a href="{{ next_page }}">
-                Forward to the past &rarr;
+                Hurá do minulosti &rarr;
             </a>
         </div>
         {{ /if }}
