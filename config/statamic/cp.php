@@ -53,7 +53,11 @@ return [
     */
 
     'widgets' => [
-        'getting_started',
+        [
+            'type' => 'collection',
+            'collection' => 'articles',
+            'width' => 100
+        ],
     ],
 
     /*
