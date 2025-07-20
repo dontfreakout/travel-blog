@@ -6,7 +6,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
         <title>{{ title }} — {{ settings:site_name }}</title>
         <meta name="description" content="{{ excerpt ?? title }}">
-        <meta name="theme-color" content="00908F">
+        <meta name="theme-color" content="93bd28">
+        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <meta name="apple-mobile-web-app-title" content="Iveta má batoh" />
+        <link rel="manifest" href="/site.webmanifest" />
         {{ vite src="resources/js/site.js|resources/css/site.css" }}
     </head>
     <body class="bg-white font-sans leading-normal text-grey-800 px-4 sm:px-10" x-data="{ showMobileNav: false }">
