@@ -31,6 +31,8 @@ RUN install-php-extensions \
     iconv \
     zip
 
+COPY .docker/php/zzzz_custom.prod.ini /usr/local/etc/php/conf.d/zzzz_custom.ini
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
